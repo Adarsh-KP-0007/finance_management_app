@@ -209,7 +209,7 @@ class _HomeViewState extends State<HomeView> {
                 children: [
                   Expanded(
                     child: SegmentButton(
-                      title: "Your subscription",
+                      title: "Your expenses",
                       isActive: isSubscription,
                       onPressed: () {
                         setState(() {

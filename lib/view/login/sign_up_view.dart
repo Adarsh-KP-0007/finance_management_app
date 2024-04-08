@@ -1,10 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trackizer/view/login/sign_in_view.dart';
+import 'package:trackizer/view/main_tab/main_tab_view.dart';
 
 import '../../common/color_extension.dart';
 import '../../common_widget/primary_button.dart';
 import '../../common_widget/round_textfield.dart';
 import '../../common_widget/secondary_boutton.dart';
+import '../../user_auth/firebase_auth_implementation/firebase_auth_services.dart';
 
 class SignUpView extends StatefulWidget {
   const SignUpView({super.key});
@@ -14,6 +17,9 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
+
+  final FirebaseAuthService _auth = FirebaseAuthService();
+
   TextEditingController txtEmail = TextEditingController();
   TextEditingController txtPassword = TextEditingController();
 
@@ -31,16 +37,26 @@ class _SignUpViewState extends State<SignUpView> {
               Image.asset("assets/img/app_logo.png",
                   width: media.width * 0.5, fit: BoxFit.contain),
               const Spacer(),
-              RoundTextField(
-                title: "E-mail address",
+              TextField(
+                style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                decoration: InputDecoration(
+                    labelText: 'Username',
+                    labelStyle: TextStyle(color: Colors.white),
+
+                ),
                 controller: txtEmail,
                 keyboardType: TextInputType.emailAddress,
+                 
               ),
               const SizedBox(
                 height: 15,
               ),
-              RoundTextField(
-                title: "Password",
+              TextField(
+                style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                decoration: InputDecoration(
+                    labelText: 'Password',
+                    labelStyle: TextStyle(color: Colors.white),
+                ),
                 controller: txtPassword,
                 obscureText: true,
               ),
@@ -95,7 +111,7 @@ class _SignUpViewState extends State<SignUpView> {
                 children: [
                   Text(
                     "Use 8 or more characters with a mix of letters,\nnumbers & symbols.",
-                    style: TextStyle(color: TColor.gray50, fontSize: 12),
+                    style: TextStyle(color: TColor.white, fontSize: 12),
                   ),
                 ],
               ),
@@ -104,14 +120,8 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               PrimaryButton(
                 title: "Get started, it's free!",
-                onPressed: () {
-                  // Navigator.push(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const SocialLoginView(),
-                  //   ),
-                  // );
-                },
+                onPressed: _signUp
+                ,
               ),
               const Spacer(),
               Text(
@@ -139,4 +149,24 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
+  void _signUp() async {
+      String email = txtEmail.text;
+      String password = txtPassword.text;
+
+      User? user = await _auth.signUpWithEmailAndPassword(email, password);
+
+      if (user != null) {
+          print("User is successfully created");
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const MainTabView(),
+              ),
+          );
+      }
+
+      else{
+        print("Some error occured");
+      }
+    }
 }

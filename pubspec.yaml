@@ -40,9 +40,12 @@ dependencies:
   calendar_agenda:
     path: dev_lib/calendar_agenda
   carousel_slider: ^4.2.1
-  card_swiper:
-    path: dev_lib/card_swiper
   material: ^1.0.0+2
+  firebase_core: any
+  firebase_auth: ^4.6.3
+  cloud_firestore: ^4.8.2
+  firebase_storage: ^11.2.4
+  flutter_spinkit: ^5.2.1
 
 dev_dependencies:
   flutter_test:

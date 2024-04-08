@@ -1,11 +1,11 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/common_widget/primary_button.dart';
 import 'package:trackizer/common_widget/round_textfield.dart';
 import 'package:trackizer/view/add_subscription/add_subscription_view.dart';
 import 'package:trackizer/view/add_expense/add_expense_view.dart';
-import '../../common_widget/image_button.dart';
+import 'package:trackizer/common_widget/image_button.dart';
 
 class Expenseorbill extends StatefulWidget {
   const Expenseorbill({super.key});
@@ -35,43 +35,28 @@ class _ExpenseorbillState extends State<Expenseorbill> {
     var media = MediaQuery.sizeOf(context);
     return Scaffold(
       backgroundColor: TColor.gray,
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 40,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddExpenseView()),
+                );
+              },
+              child: Text('Go to Expense'),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:
-                  InkWell(
-                    onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddExpenseView()) );
-                      },
-                    child:PrimaryButton(
-                        title: "Expense", 
-                        onPressed: () {},
-                      ),
-                  )
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:
-                  InkWell(
-                    onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  AddSubScriptionView()) );
-                      },
-                    child: PrimaryButton(
-                        title: "Subscription", 
-                        onPressed: () {},
-                    ),
-                  )
-            ),
-            const SizedBox(
-              height: 20,
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddSubScriptionView()),
+                );
+              },
+              child: Text('Go to Subscription'),
             ),
           ],
         ),

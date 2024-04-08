@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyB32drNj1c-VERKYz_jnn1Ob6A2uZrW4DM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>789896676126</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.codeforany.trackizer</string>
+	<key>PROJECT_ID</key>
+	<string>finance-management-app-5f7ae</string>
+	<key>STORAGE_BUCKET</key>
+	<string>finance-management-app-5f7ae.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:789896676126:ios:c93110d12373e0bcfe7f0f</string>
+	<key>DATABASE_URL</key>
+	<string>https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app</string>
+</dict>
+</plist>

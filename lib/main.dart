@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:trackizer/common/color_extension.dart';
+import 'package:trackizer/firebase_options.dart';
 import 'package:trackizer/view/login/welcome_view.dart';
 import 'package:trackizer/view/main_tab/main_tab_view.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
+import 'package:trackizer/shared/constants.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  if(kIsWeb){
+    await Firebase.initializeApp(
+        options: FirebaseOptions(
+            apiKey: Constants.apiKey,
+            appId: Constants.appId,
+            messagingSenderId: Constants.messagingSenderId,
+            projectId: Constants.projectId));
+  }
+
+  else{
+    await Firebase.initializeApp();
+  }
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -14,7 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Trackizer',
+      title: 'App',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         fontFamily: "Inter",
@@ -27,7 +46,7 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: false,
       ),
-      home: const MainTabView(),
+      home: const WelcomeView(),
     );
   }
 }
