@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:vector_math/vector_math.dart';
 import '../common/color_extension.dart';
 
-
 class ArcValueModel {
   final Color color;
   final double value;
@@ -20,15 +19,19 @@ class CustomArc180Painter extends CustomPainter {
   final List<ArcValueModel> drwArcs;
 
   CustomArc180Painter(
-      { required this.drwArcs, this.start = 0, this.end = 180, this.space = 5, this.width = 15, this.bgWidth = 10,  this.blurWidth = 4});
+      {required this.drwArcs,
+      this.start = 0,
+      this.end = 180,
+      this.space = 5,
+      this.width = 15,
+      this.bgWidth = 10,
+      this.blurWidth = 4});
 
   @override
   void paint(Canvas canvas, Size size) {
     var rect = Rect.fromCircle(
-        center: Offset(size.width / 2, size.height ),
-        radius: size.width / 2);
+        center: Offset(size.width / 2, size.height), radius: size.width / 2);
 
-    
     Paint backgroundPaint = Paint();
     backgroundPaint.color = TColor.gray60.withOpacity(0.5);
     backgroundPaint.style = PaintingStyle.stroke;
@@ -41,8 +44,6 @@ class CustomArc180Painter extends CustomPainter {
         rect, radians(startVal), radians(180), false, backgroundPaint);
 
     for (var arcObj in drwArcs) {
-
-     
       Paint activePaint = Paint();
       activePaint.color = arcObj.color;
       activePaint.style = PaintingStyle.stroke;
@@ -55,18 +56,16 @@ class CustomArc180Painter extends CustomPainter {
         ..strokeWidth = width + blurWidth
         ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 5);
 
-
       //Draw Shadow Arc
       Path path = Path();
-      path.addArc(rect, radians(drawStart), radians(arcObj.value - space ));
+      path.addArc(rect, radians(drawStart), radians(arcObj.value - space));
       canvas.drawPath(path, shadowPaint);
 
-      canvas.drawArc(rect, radians(drawStart), radians(arcObj.value  - space ), false, activePaint);
+      canvas.drawArc(rect, radians(drawStart), radians(arcObj.value - space),
+          false, activePaint);
 
       drawStart = drawStart + arcObj.value + space;
     }
-    
-    
   }
 
   @override
