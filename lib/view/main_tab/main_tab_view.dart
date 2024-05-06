@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:trackizer/view/add_subscription/add_subscription_view.dart';
 import 'package:trackizer/view/add_expense/add_expense_view.dart';
 import 'package:trackizer/view/expense_or_bill/expense_bill.dart';
+import 'package:trackizer/view/monthly_report/monthly_report.dart';
 import '../../common/color_extension.dart';
 import '../calender/calender_view.dart';
 
@@ -91,7 +93,7 @@ class _MainTabViewState extends State<MainTabView> {
                               onPressed: () {
                                 setState(() {
                                   selectTab = 2;
-                                  currentTabView = CalenderView();
+                                  currentTabView = const CalenderView();
                                 });
                               },
                               icon: Image.asset(
@@ -105,7 +107,10 @@ class _MainTabViewState extends State<MainTabView> {
                             ),
                             IconButton(
                               onPressed: () {
-                                
+                                setState(() {
+                                  selectTab = 3;
+                                  currentTabView = const DateSelectionPage();
+                                });
                               },
                               icon: Image.asset(
                                 "assets/img/creditcards.png",
@@ -122,7 +127,10 @@ class _MainTabViewState extends State<MainTabView> {
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) =>  Expenseorbill()) );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Expenseorbill()));
                       },
                       child: Container(
                         margin: const EdgeInsets.all(20),
@@ -138,7 +146,7 @@ class _MainTabViewState extends State<MainTabView> {
                           height: 55,
                         ),
                       ),
-                    )
+                    ),
                   ],
                 ),
               )
