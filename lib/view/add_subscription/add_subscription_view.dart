@@ -110,7 +110,9 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                         itemBuilder: (BuildContext context1, int itemIndex,
                             int pageViewIndex) {
                           var sObj = subArr[itemIndex] as Map? ?? {};
-                          sObjName = sObj["name"];
+                          var actualsObj =
+                              subArr[(itemIndex + 1) % subArr.length];
+                          sObjName = actualsObj["name"];
                           return Container(
                             margin: const EdgeInsets.all(10),
                             child: Column(
@@ -206,9 +208,10 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
 
       var db = FirebaseFirestore.instance;
       final subdata = <String, dynamic>{
-        "subscriptionType": sObjName,
-        "Monthlyprice": parsedInteger,
-        "Date": todayDate
+        "type": sObjName,
+        "expense": parsedInteger,
+        "mail": "",
+        "date": DateTime.now()
       };
 
       db.collection("subscription").add(subdata).then((DocumentReference doc) =>

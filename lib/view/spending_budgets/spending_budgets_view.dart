@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/common_widget/budgets_row.dart';
 import 'package:trackizer/common_widget/custom_arc_180_painter.dart';
@@ -13,7 +15,49 @@ class SpendingBudgetsView extends StatefulWidget {
   State<SpendingBudgetsView> createState() => _SpendingBudgetsViewState();
 }
 
+List budgetArr = [];
+int transactionsum = 0;
+
 class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
+  fetchData() async {
+    budgetArr = [];
+
+    var db = FirebaseFirestore.instance;
+    List<Map<String, dynamic>> tempList1 = [];
+    // Create a temporary list
+    await db.collection("budget").get().then((event) {
+      for (var doc in event.docs) {
+        int spent = fetchspent(doc.data()['type']);
+        int budget = doc.data()['budget'];
+        int unspent = budget - spent;
+        tempList1.add({
+          "type": doc.data()['type'],
+          "spent": spent,
+          "unspent": unspent,
+          "total": doc.data()['budget]']
+        });
+      }
+    });
+    setState(() {
+      budgetArr = tempList1;
+    });
+    print(budgetArr);
+  }
+
+  int fetchspent(String category) {
+    var db;
+    transactionsum = 0;
+    db.collection("transaction").get().then((event) {
+      for (var doc in event.docs) {
+        if (doc.data()['type'] == category) {
+          int expense = doc.data()['expense'];
+          transactionsum += expense;
+        }
+      }
+    });
+    return transactionsum;
+  }
+
   List budgetArr = [
     {
       "name": "Auto & Transport",

@@ -6,26 +6,15 @@ import 'package:trackizer/common_widget/round_textfield.dart';
 
 import '../../common_widget/image_button.dart';
 
-class AddExpenseView extends StatefulWidget {
-  const AddExpenseView({super.key});
+class AddBudgetView extends StatefulWidget {
+  const AddBudgetView({super.key});
 
   @override
-  State<AddExpenseView> createState() => _AddExpenseViewState();
+  State<AddBudgetView> createState() => _AddBudgetViewState();
 }
 
-class _AddExpenseViewState extends State<AddExpenseView> {
+class _AddBudgetViewState extends State<AddBudgetView> {
   TextEditingController txtDescription = TextEditingController();
-
-  List subArr = [
-    {"name": "HBO GO", "icon": "assets/img/hbo_logo.png"},
-    {"name": "Spotify", "icon": "assets/img/spotify_logo.png"},
-    {"name": "YouTube Premium", "icon": "assets/img/youtube_logo.png"},
-    {
-      "name": "Microsoft OneDrive",
-      "icon": "assets/img/onedrive_logo.png",
-    },
-    {"name": "NetFlix", "icon": "assets/img/netflix_logo.png"}
-  ];
 
   double amountVal = 0.09;
 
@@ -54,13 +43,13 @@ class _AddExpenseViewState extends State<AddExpenseView> {
             Padding(
                 padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
                 child: RoundTextField(
-                  title: "Expense",
+                  title: "Budget Goal",
                   titleAlign: TextAlign.center,
                   controller: txtDescription,
                 )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: PrimaryButton(title: "Add this Expense", onPressed: () {}),
+              child: PrimaryButton(title: "Start saving!", onPressed: () {}),
             ),
             const SizedBox(
               height: 20,

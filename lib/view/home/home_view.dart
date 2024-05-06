@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trackizer/common/color_extension.dart';
 
 import '../../common_widget/custom_arc_painter.dart';
@@ -16,37 +18,48 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
-  bool isSubscription = true;
-  List subArr = [
-    {"name": "Spotify", "icon": "assets/img/spotify_logo.png", "price": "5.99"},
-    {
-      "name": "YouTube Premium",
-      "icon": "assets/img/youtube_logo.png",
-      "price": "18.99"
-    },
-    {
-      "name": "Microsoft OneDrive",
-      "icon": "assets/img/onedrive_logo.png",
-      "price": "29.99"
-    },
-    {"name": "NetFlix", "icon": "assets/img/netflix_logo.png", "price": "15.00"}
-  ];
+List subArr = [];
+List transactionArr = [];
 
-  List bilArr = [
-    {"name": "Spotify", "date": DateTime(2023, 07, 25), "price": "5.99"},
-    {
-      "name": "YouTube Premium",
-      "date": DateTime(2023, 07, 25),
-      "price": "18.99"
-    },
-    {
-      "name": "Microsoft OneDrive",
-      "date": DateTime(2023, 07, 25),
-      "price": "29.99"
-    },
-    {"name": "NetFlix", "date": DateTime(2023, 07, 25), "price": "15.00"}
-  ];
+class _HomeViewState extends State<HomeView> {
+  fetchData() async {
+    subArr = [];
+    transactionArr = [];
+    var db = FirebaseFirestore.instance;
+    List<Map<String, dynamic>> tempList1 = [];
+    List<Map<String, dynamic>> tempList2 = []; // Create a temporary list
+    await db.collection("subscription").get().then((event) {
+      for (var doc in event.docs) {
+        tempList1.add({
+          "type": doc.data()['type'],
+          "expense": doc.data()['expense'],
+          "date": DateFormat("dd-MM").format(doc.data()['date'].toDate())
+        });
+      }
+    });
+    await db.collection("transaction").get().then((event) {
+      for (var doc in event.docs) {
+        tempList2.add({
+          "category": doc.data()['category'],
+          "expense": doc.data()['expense']
+        });
+      }
+    });
+    setState(() {
+      subArr = tempList1;
+      transactionArr = tempList2;
+    });
+    print(subArr);
+    print(transactionArr);
+  }
+
+  bool isSubscription = true;
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,14 +84,15 @@ class _HomeViewState extends State<HomeView> {
                     alignment: Alignment.topCenter,
                     children: [
                       Container(
-                        padding:  EdgeInsets.only(bottom: media.width * 0.05),
+                        padding: EdgeInsets.only(bottom: media.width * 0.05),
                         width: media.width * 0.72,
                         height: media.width * 0.72,
                         child: CustomPaint(
-                          painter: CustomArcPainter(end: 220, ),
+                          painter: CustomArcPainter(
+                            end: 220,
+                          ),
                         ),
                       ),
-
                       Padding(
                         padding: const EdgeInsets.only(right: 10),
                         child: Row(
@@ -109,7 +123,7 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       Image.asset("assets/img/app_logo.png",
                           width: media.width * 0.25, fit: BoxFit.contain),
-                       SizedBox(
+                      SizedBox(
                         height: media.width * 0.07,
                       ),
                       Text(
@@ -238,15 +252,18 @@ class _HomeViewState extends State<HomeView> {
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: subArr.length,
+                  itemCount: transactionArr.length,
                   itemBuilder: (context, index) {
-                    var sObj = subArr[index] as Map? ?? {};
+                    var sObj = transactionArr[index] as Map? ?? {};
 
                     return SubScriptionHomeRow(
                       sObj: sObj,
                       onPressed: () {
-
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SubscriptionInfoView( sObj: sObj ) ));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    SubscriptionInfoView(sObj: sObj)));
                       },
                     );
                   }),

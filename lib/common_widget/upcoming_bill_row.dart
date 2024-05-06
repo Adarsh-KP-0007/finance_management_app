@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../common/color_extension.dart';
 
@@ -6,8 +7,8 @@ class UpcomingBillRow extends StatelessWidget {
   final Map sObj;
   final VoidCallback onPressed;
 
-  const UpcomingBillRow(
-      {super.key, required this.sObj, required this.onPressed});
+  const UpcomingBillRow({Key? key, required this.sObj, required this.onPressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,32 +38,13 @@ class UpcomingBillRow extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
-                child: Column(
-                  children: [
-                    Text(
-                      "Jun",
-                      style: TextStyle(
-                          color: TColor.gray30,
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500),
-                    ),
-
-                    Text(
-                      "25",
-                      style: TextStyle(
-                          color: TColor.gray30,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500),
-                    )
-                  ],
-                ),
               ),
               const SizedBox(
                 width: 8,
               ),
               Expanded(
                 child: Text(
-                  sObj["name"],
+                  sObj["type"],
                   style: TextStyle(
                       color: TColor.white,
                       fontSize: 14,
@@ -70,17 +52,27 @@ class UpcomingBillRow extends StatelessWidget {
                 ),
               ),
               const SizedBox(
-                width: 8,
+                width: 30,
               ),
               Text(
-  "₹${sObj["price"]}",
-  style: TextStyle(
-    color: TColor.white,
-    fontSize: 14,
-    fontWeight: FontWeight.w600,
-  ),
-)
-
+                "₹${sObj["expense"]}",
+                style: TextStyle(
+                  color: TColor.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(
+                width: 100,
+              ),
+              Text(
+                sObj["date"],
+                style: TextStyle(
+                  color: TColor.white,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w600,
+                ),
+              )
             ],
           ),
         ),

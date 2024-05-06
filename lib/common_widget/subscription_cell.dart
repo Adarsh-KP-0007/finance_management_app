@@ -26,26 +26,17 @@ class SubScriptionCell extends StatelessWidget {
         alignment: Alignment.centerLeft,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-        
           children: [
-            Image.asset(
-              sObj["icon"],
-              width: 45,
-              height: 45,
-            ),
-            const Spacer(),
             Text(
-              sObj["name"],
+              sObj["subscriptionType"],
               style: TextStyle(
                   color: TColor.white,
                   fontSize: 14,
                   fontWeight: FontWeight.w600),
             ),
-            const SizedBox(
-              width: 8,
-            ),
+            const Spacer(),
             Text(
-              "₹${sObj["price"]}",
+              "₹${sObj["Monthlyprice"]}",
               style: TextStyle(
                   color: TColor.white,
                   fontSize: 20,
