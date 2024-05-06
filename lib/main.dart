@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/firebase_options.dart';
@@ -10,21 +11,18 @@ import 'package:trackizer/shared/constants.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  if(kIsWeb){
+  if (kIsWeb) {
     await Firebase.initializeApp(
         options: FirebaseOptions(
             apiKey: Constants.apiKey,
             appId: Constants.appId,
             messagingSenderId: Constants.messagingSenderId,
             projectId: Constants.projectId));
-  }
-
-  else{
+  } else {
     await Firebase.initializeApp();
   }
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

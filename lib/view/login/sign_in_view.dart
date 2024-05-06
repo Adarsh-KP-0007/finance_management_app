@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trackizer/view/login/sign_up_view.dart';
@@ -17,7 +18,6 @@ class SignInView extends StatefulWidget {
 }
 
 class _SignInViewState extends State<SignInView> {
-
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController txtEmail = TextEditingController();
@@ -39,33 +39,31 @@ class _SignInViewState extends State<SignInView> {
                   width: media.width * 0.5, fit: BoxFit.contain),
               const Spacer(),
               TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 decoration: InputDecoration(
-                    labelText: 'Username',
-                    labelStyle: TextStyle(color: Colors.white),
-
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 controller: txtEmail,
                 keyboardType: TextInputType.emailAddress,
-                 
               ),
               const SizedBox(
                 height: 15,
               ),
               TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.white),
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 controller: txtPassword,
                 obscureText: true,
               ),
-
-               const SizedBox(
+              const SizedBox(
                 height: 8,
               ),
-
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -104,15 +102,10 @@ class _SignInViewState extends State<SignInView> {
                   ),
                 ],
               ),
-
               const SizedBox(
                 height: 8,
               ),
-
-              PrimaryButton(
-                title: "Sign In",
-                onPressed: _signIn
-              ),
+              PrimaryButton(title: "Sign In", onPressed: _signIn),
               const Spacer(),
               Text(
                 "if you don't have an account yet?",
@@ -139,24 +132,25 @@ class _SignInViewState extends State<SignInView> {
       ),
     );
   }
+
   void _signIn() async {
-      String email = txtEmail.text;
-      String password = txtPassword.text;
+    String email = txtEmail.text;
+    String password = txtPassword.text;
 
-      User? user = await _auth.signInWithEmailAndPassword(email, password);
+    User? user = await _auth.signInWithEmailAndPassword(email, password);
 
-      if (user != null) {
-          print("User logged in successfully");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainTabView(),
-              ),
-          );
-      }
+    if (user != null) {
+      print("User logged in successfully");
+      // Create a new user with a first and last name
 
-      else{
-        print("Some error occured");
-      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MainTabView(),
+        ),
+      );
+    } else {
+      print("Some error occured");
     }
+  }
 }
