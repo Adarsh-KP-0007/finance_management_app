@@ -49,7 +49,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '789896676126',
     projectId: 'finance-management-app-5f7ae',
     authDomain: 'finance-management-app-5f7ae.firebaseapp.com',
-    databaseURL: 'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'finance-management-app-5f7ae.appspot.com',
   );
 
@@ -58,7 +59,8 @@ class DefaultFirebaseOptions {
     appId: '1:789896676126:android:9266582afa146376fe7f0f',
     messagingSenderId: '789896676126',
     projectId: 'finance-management-app-5f7ae',
-    databaseURL: 'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'finance-management-app-5f7ae.appspot.com',
   );
 
@@ -67,7 +69,8 @@ class DefaultFirebaseOptions {
     appId: '1:789896676126:ios:c93110d12373e0bcfe7f0f',
     messagingSenderId: '789896676126',
     projectId: 'finance-management-app-5f7ae',
-    databaseURL: 'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'finance-management-app-5f7ae.appspot.com',
     iosBundleId: 'com.codeforany.trackizer',
   );
@@ -77,7 +80,8 @@ class DefaultFirebaseOptions {
     appId: '1:789896676126:ios:8e5fa62206092ce1fe7f0f',
     messagingSenderId: '789896676126',
     projectId: 'finance-management-app-5f7ae',
-    databaseURL: 'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
+    databaseURL:
+        'https://finance-management-app-5f7ae-default-rtdb.asia-southeast1.firebasedatabase.app',
     storageBucket: 'finance-management-app-5f7ae.appspot.com',
     iosBundleId: 'com.codeforany.financeManagementApp.RunnerTests',
   );

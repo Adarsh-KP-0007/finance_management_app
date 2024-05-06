@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trackizer/view/login/sign_in_view.dart';
@@ -17,7 +18,6 @@ class SignUpView extends StatefulWidget {
 }
 
 class _SignUpViewState extends State<SignUpView> {
-
   final FirebaseAuthService _auth = FirebaseAuthService();
 
   TextEditingController txtEmail = TextEditingController();
@@ -38,24 +38,24 @@ class _SignUpViewState extends State<SignUpView> {
                   width: media.width * 0.5, fit: BoxFit.contain),
               const Spacer(),
               TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 decoration: InputDecoration(
-                    labelText: 'Username',
-                    labelStyle: TextStyle(color: Colors.white),
-
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 controller: txtEmail,
                 keyboardType: TextInputType.emailAddress,
-                 
               ),
               const SizedBox(
                 height: 15,
               ),
               TextField(
-                style: TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 decoration: InputDecoration(
-                    labelText: 'Password',
-                    labelStyle: TextStyle(color: Colors.white),
+                  labelText: 'Password',
+                  labelStyle: TextStyle(color: Colors.white),
                 ),
                 controller: txtPassword,
                 obscureText: true,
@@ -120,8 +120,7 @@ class _SignUpViewState extends State<SignUpView> {
               ),
               PrimaryButton(
                 title: "Get started, it's free!",
-                onPressed: _signUp
-                ,
+                onPressed: _signUp,
               ),
               const Spacer(),
               Text(
@@ -135,7 +134,7 @@ class _SignUpViewState extends State<SignUpView> {
               SecondaryButton(
                 title: "Sign in",
                 onPressed: () {
-                   Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const SignInView(),
@@ -149,24 +148,31 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
+//hello
   void _signUp() async {
-      String email = txtEmail.text;
-      String password = txtPassword.text;
+    String email = txtEmail.text;
+    String password = txtPassword.text;
 
-      User? user = await _auth.signUpWithEmailAndPassword(email, password);
+    User? user = await _auth.signUpWithEmailAndPassword(email, password);
+    var db = FirebaseFirestore.instance;
+    if (user != null) {
+      print("User is successfully created");
+      final userdata = <String, dynamic>{
+        "name": "Test",
+        "email": user.email,
+        "createdAt": 1815
+      };
 
-      if (user != null) {
-          print("User is successfully created");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const MainTabView(),
-              ),
-          );
-      }
-
-      else{
-        print("Some error occured");
-      }
+      db.collection("users").add(userdata).then((DocumentReference doc) =>
+          print('DocumentSnapshot added with ID: ${doc.id}'));
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const MainTabView(),
+        ),
+      );
+    } else {
+      print("Some error occured");
     }
+  }
 }

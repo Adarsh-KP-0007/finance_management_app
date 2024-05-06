@@ -1,8 +1,14 @@
+import 'dart:js';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/common_widget/primary_button.dart';
 import 'package:trackizer/common_widget/round_textfield.dart';
+import 'package:trackizer/view/main_tab/main_tab_view.dart';
 
 import '../../common_widget/image_button.dart';
 
@@ -15,6 +21,7 @@ class AddSubScriptionView extends StatefulWidget {
 
 class _AddSubScriptionViewState extends State<AddSubScriptionView> {
   TextEditingController txtDescription = TextEditingController();
+  TextEditingController txtMonthlyPrice = TextEditingController();
 
   List subArr = [
     {"name": "HBO GO", "icon": "assets/img/hbo_logo.png"},
@@ -26,9 +33,9 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
     },
     {"name": "NetFlix", "icon": "assets/img/netflix_logo.png"}
   ];
-
+  DateTime todayDate = DateTime.now();
   double amountVal = 0.09;
-
+  String sObjName = 'NULL';
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.sizeOf(context);
@@ -100,10 +107,10 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                           enlargeStrategy: CenterPageEnlargeStrategy.zoom,
                         ),
                         itemCount: subArr.length,
-                        itemBuilder: (BuildContext context, int itemIndex,
+                        itemBuilder: (BuildContext context1, int itemIndex,
                             int pageViewIndex) {
                           var sObj = subArr[itemIndex] as Map? ?? {};
-
+                          sObjName = sObj["name"];
                           return Container(
                             margin: const EdgeInsets.all(10),
                             child: Column(
@@ -133,80 +140,54 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                 ),
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-              child: RoundTextField(title: "Description", titleAlign: TextAlign.center, controller: txtDescription, )
-
-            ),
-
+                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                child: RoundTextField(
+                  title: "Description",
+                  titleAlign: TextAlign.center,
+                  controller: txtDescription,
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              child: Column(
                 children: [
-                  ImageButton(
-                    image: "assets/img/minus.png",
-                    onPressed: () {
-
-                      amountVal -= 0.1;
-
-                      if(amountVal < 0) {
-                        amountVal = 0;
-                      }
-
-                      setState(() {
-                        
-                      });
-                    },
+                  Text(
+                    "Monthly price",
+                    style: TextStyle(
+                        color: TColor.gray40,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
                   ),
-
-                  Column(
-                    children: [
-                        Text(
-                        "Monthly price",
-                        style: TextStyle(
-                            color: TColor.gray40,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600),
-                      ),
-
-                     const SizedBox(height: 4,),
-
-                       Text(
-                        "\₹₹{amountVal.toStringAsFixed(2)}",
-                        style: TextStyle(
-                            color: TColor.white,
-                            fontSize: 40,
-                            fontWeight: FontWeight.w700),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-
-                      Container(
-                        width: 150,
-                        height: 1,
-                        color: TColor.gray70,
-                      )
-                    ],
+                  const SizedBox(
+                    height: 4,
                   ),
-
-                  ImageButton(
-                    image: "assets/img/plus.png",
-                    onPressed: () {
-                      amountVal += 0.1;
-
-                      setState(() {});
-                    },
+                  TextField(
+                    style: TextStyle(
+                        color: TColor.white,
+                        fontSize: 40,
+                        fontWeight: FontWeight.w700),
+                    controller: txtMonthlyPrice,
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  Container(
+                    width: 150,
+                    height: 1,
+                    color: TColor.gray70,
                   )
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:
-                  PrimaryButton(title: "Add this platform", onPressed: () {}),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: PrimaryButton(
+                title: "Add this platform",
+                onPressed: () => _addsub(context, sObjName),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             const SizedBox(
               height: 20,
@@ -215,5 +196,27 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
         ),
       ),
     );
+  }
+
+  void _addsub(context, String sObjName) async {
+    // Your text input
+    int parsedInteger;
+    try {
+      parsedInteger = int.parse(txtMonthlyPrice.text);
+
+      var db = FirebaseFirestore.instance;
+      final subdata = <String, dynamic>{
+        "subscriptionType": sObjName,
+        "Monthlyprice": parsedInteger,
+        "Date": todayDate
+      };
+
+      db.collection("subscription").add(subdata).then((DocumentReference doc) =>
+          print('DocumentSnapshot added with ID: ${doc.id}'));
+    } catch (e) {
+      print("Error");
+    }
+    Navigator.pop(context);
+    Navigator.pop(context);
   }
 }
