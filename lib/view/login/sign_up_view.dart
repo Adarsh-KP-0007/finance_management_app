@@ -148,7 +148,7 @@ class _SignUpViewState extends State<SignUpView> {
       ),
     );
   }
-
+//hello
   void _signUp() async {
     String email = txtEmail.text;
     String password = txtPassword.text;
