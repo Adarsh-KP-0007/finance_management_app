@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/services/ems_pdf_service.dart';
 
 class DateSelectionPage extends StatefulWidget {
@@ -44,6 +45,7 @@ class _DateSelectionPageState extends State<DateSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: TColor.gray,
       appBar: AppBar(
         title: const Text('Date Selection'),
       ),
@@ -54,6 +56,7 @@ class _DateSelectionPageState extends State<DateSelectionPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ListTile(
+              tileColor: TColor.primary,
               title: Text(
                   'Select Start Date: ${DateFormat('yyyy-MM-dd').format(_startDate)}'), // Display selected start date
               trailing: IconButton(
@@ -63,6 +66,7 @@ class _DateSelectionPageState extends State<DateSelectionPage> {
             ),
             const SizedBox(height: 20),
             ListTile(
+              tileColor: TColor.primary,
               title: Text(
                   'Select End Date: ${DateFormat('yyyy-MM-dd').format(_endDate)}'), // Display selected end date
               trailing: IconButton(
