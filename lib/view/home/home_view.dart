@@ -20,25 +20,48 @@ class HomeView extends StatefulWidget {
 
 List subArr = [];
 List transactionArr = [];
+int billcount = 0;
+int highestbill = 0;
+int lowestbill = 0;
+int totalexpense = 0;
 
 class _HomeViewState extends State<HomeView> {
   fetchData() async {
     subArr = [];
     transactionArr = [];
+
     var db = FirebaseFirestore.instance;
     List<Map<String, dynamic>> tempList1 = [];
     List<Map<String, dynamic>> tempList2 = []; // Create a temporary list
     await db.collection("subscription").get().then((event) {
+      billcount = 0;
+      highestbill = 0;
+      lowestbill = 0;
       for (var doc in event.docs) {
+        int expense = doc.data()['expense'];
+        billcount += 1;
+
+        if (lowestbill == 0) {
+          lowestbill = expense;
+        }
+        if (expense > highestbill) {
+          highestbill = expense;
+        }
+        if (expense < lowestbill) {
+          lowestbill = expense;
+        }
         tempList1.add({
           "type": doc.data()['type'],
-          "expense": doc.data()['expense'],
+          "expense": expense,
           "date": DateFormat("dd-MM").format(doc.data()['date'].toDate())
         });
       }
     });
     await db.collection("transaction").get().then((event) {
+      totalexpense = 0;
       for (var doc in event.docs) {
+        int expense = doc.data()['expense'];
+        totalexpense += expense;
         tempList2.add({
           "category": doc.data()['category'],
           "expense": doc.data()['expense']
@@ -127,7 +150,7 @@ class _HomeViewState extends State<HomeView> {
                         height: media.width * 0.07,
                       ),
                       Text(
-                        "\₹1,235",
+                        "\₹$totalexpense",
                         style: TextStyle(
                             color: TColor.white,
                             fontSize: 40,
@@ -178,7 +201,7 @@ class _HomeViewState extends State<HomeView> {
                             Expanded(
                               child: StatusButton(
                                 title: "Active subs",
-                                value: "12",
+                                value: "$billcount",
                                 statusColor: TColor.secondary,
                                 onPressed: () {},
                               ),
@@ -189,7 +212,7 @@ class _HomeViewState extends State<HomeView> {
                             Expanded(
                               child: StatusButton(
                                 title: "Highest subs",
-                                value: "\₹19.99",
+                                value: "\₹$highestbill",
                                 statusColor: TColor.primary10,
                                 onPressed: () {},
                               ),
@@ -200,7 +223,7 @@ class _HomeViewState extends State<HomeView> {
                             Expanded(
                               child: StatusButton(
                                 title: "Lowest subs",
-                                value: "\₹5.99",
+                                value: "\₹$lowestbill",
                                 statusColor: TColor.secondaryG,
                                 onPressed: () {},
                               ),
