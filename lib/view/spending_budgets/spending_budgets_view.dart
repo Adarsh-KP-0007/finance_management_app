@@ -127,7 +127,7 @@ class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Your budgets are on tack 👍",
+                        "Your budgets are on track 👍",
                         style: TextStyle(
                             color: TColor.white,
                             fontSize: 14,
