@@ -1,8 +1,13 @@
+import 'dart:js';
+
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/common_widget/primary_button.dart';
 import 'package:trackizer/common_widget/round_textfield.dart';
+import 'package:trackizer/view/main_tab/main_tab_view.dart';
 
 import '../../common_widget/image_button.dart';
 
@@ -15,6 +20,7 @@ class AddSubScriptionView extends StatefulWidget {
 
 class _AddSubScriptionViewState extends State<AddSubScriptionView> {
   TextEditingController txtDescription = TextEditingController();
+  TextEditingController txtMonthlyPrice = TextEditingController();
 
   List subArr = [
     {"name": "HBO GO", "icon": "assets/img/hbo_logo.png"},
@@ -28,7 +34,7 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
   ];
 
   double amountVal = 0.09;
-
+  String sObjName = 'NULL';
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.sizeOf(context);
@@ -103,7 +109,7 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                         itemBuilder: (BuildContext context, int itemIndex,
                             int pageViewIndex) {
                           var sObj = subArr[itemIndex] as Map? ?? {};
-
+                          sObjName = sObj["name"];
                           return Container(
                             margin: const EdgeInsets.all(10),
                             child: Column(
@@ -133,57 +139,40 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                 ),
               ),
             ),
-
             Padding(
-              padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-              child: RoundTextField(title: "Description", titleAlign: TextAlign.center, controller: txtDescription, )
-
-            ),
-
+                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
+                child: RoundTextField(
+                  title: "Description",
+                  titleAlign: TextAlign.center,
+                  controller: txtDescription,
+                )),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 40, horizontal: 20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ImageButton(
-                    image: "assets/img/minus.png",
-                    onPressed: () {
-
-                      amountVal -= 0.1;
-
-                      if(amountVal < 0) {
-                        amountVal = 0;
-                      }
-
-                      setState(() {
-                        
-                      });
-                    },
-                  ),
-
                   Column(
                     children: [
-                        Text(
+                      Text(
                         "Monthly price",
                         style: TextStyle(
                             color: TColor.gray40,
                             fontSize: 12,
                             fontWeight: FontWeight.w600),
                       ),
-
-                     const SizedBox(height: 4,),
-
-                       Text(
-                        "\₹₹{amountVal.toStringAsFixed(2)}",
+                      const SizedBox(
+                        height: 4,
+                      ),
+                      TextField(
                         style: TextStyle(
                             color: TColor.white,
                             fontSize: 40,
                             fontWeight: FontWeight.w700),
+                        controller: txtMonthlyPrice,
                       ),
                       const SizedBox(
                         height: 8,
                       ),
-
                       Container(
                         width: 150,
                         height: 1,
@@ -191,22 +180,18 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
                       )
                     ],
                   ),
-
-                  ImageButton(
-                    image: "assets/img/plus.png",
-                    onPressed: () {
-                      amountVal += 0.1;
-
-                      setState(() {});
-                    },
-                  )
                 ],
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child:
-                  PrimaryButton(title: "Add this platform", onPressed: () {}),
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: PrimaryButton(
+                title: "Add this platform",
+                onPressed: () => _addsub(sObjName, amountVal),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
             ),
             const SizedBox(
               height: 20,
@@ -216,4 +201,28 @@ class _AddSubScriptionViewState extends State<AddSubScriptionView> {
       ),
     );
   }
+}
+
+DateTime now = DateTime.now();
+DateTime today = DateTime.now();
+DateTime todayDate = DateTime(today.month, today.day);
+
+void _addsub(String sObjName, double amountVal) async {
+  String amountVal = txtMonthlyPrice.text;
+  var db = FirebaseFirestore.instance;
+  print("User is successfully created");
+  final subdata = <String, dynamic>{
+    "subscriptionType": sObjName,
+    "Monthlyprice": amountVal,
+    "Date": todayDate
+  };
+
+  db.collection("subscription").add(subdata).then((DocumentReference doc) =>
+      print('DocumentSnapshot added with ID: ${doc.id}'));
+  Navigator.push(
+    context as BuildContext,
+    MaterialPageRoute(
+      builder: (context) => const MainTabView(),
+    ),
+  );
 }
