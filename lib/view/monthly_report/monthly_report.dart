@@ -45,9 +45,10 @@ class _DateSelectionPageState extends State<DateSelectionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: TColor.gray,
+      backgroundColor: TColor.gray70,
       appBar: AppBar(
         title: const Text('Date Selection'),
+        backgroundColor: TColor.gray70,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -56,7 +57,7 @@ class _DateSelectionPageState extends State<DateSelectionPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ListTile(
-              tileColor: TColor.primary,
+              tileColor: TColor.secondary,
               title: Text(
                   'Select Start Date: ${DateFormat('yyyy-MM-dd').format(_startDate)}'), // Display selected start date
               trailing: IconButton(
@@ -66,7 +67,7 @@ class _DateSelectionPageState extends State<DateSelectionPage> {
             ),
             const SizedBox(height: 20),
             ListTile(
-              tileColor: TColor.primary,
+              tileColor: TColor.secondary,
               title: Text(
                   'Select End Date: ${DateFormat('yyyy-MM-dd').format(_endDate)}'), // Display selected end date
               trailing: IconButton(
