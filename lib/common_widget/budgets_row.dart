@@ -11,7 +11,7 @@ class BudgetsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var proVal = (double.tryParse(bObj["spent"]) ?? 0) /
-        (double.tryParse(bObj["totalbudget"]) ?? 0);
+        (double.tryParse(bObj["budget"]) ?? 0);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
