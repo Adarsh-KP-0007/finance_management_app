@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:trackizer/common/color_extension.dart';
 import 'package:trackizer/common_widget/primary_button.dart';
@@ -15,6 +16,8 @@ class AddExpenseView extends StatefulWidget {
 
 class _AddExpenseViewState extends State<AddExpenseView> {
   TextEditingController txtDescription = TextEditingController();
+  TextEditingController txtExpense = TextEditingController();
+  TextEditingController txtCategory = TextEditingController();
 
   List subArr = [
     {"name": "HBO GO", "icon": "assets/img/hbo_logo.png"},
@@ -42,7 +45,7 @@ class _AddExpenseViewState extends State<AddExpenseView> {
                 child: RoundTextField(
                   title: "Category",
                   titleAlign: TextAlign.center,
-                  controller: txtDescription,
+                  controller: txtCategory,
                 )),
             Padding(
                 padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
@@ -56,11 +59,13 @@ class _AddExpenseViewState extends State<AddExpenseView> {
                 child: RoundTextField(
                   title: "Expense",
                   titleAlign: TextAlign.center,
-                  controller: txtDescription,
+                  controller: txtExpense,
                 )),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: PrimaryButton(title: "Add this Expense", onPressed: () {}),
+              child: PrimaryButton(
+                  title: "Add this Expense",
+                  onPressed: () => _addexpense(context)),
             ),
             const SizedBox(
               height: 20,
@@ -69,5 +74,28 @@ class _AddExpenseViewState extends State<AddExpenseView> {
         ),
       ),
     );
+  }
+
+  void _addexpense(context) async {
+    // Your text input
+    int parsedInteger;
+    try {
+      parsedInteger = int.parse(txtExpense.text);
+
+      var db = FirebaseFirestore.instance;
+      final subdata = <String, dynamic>{
+        "category": txtCategory.text,
+        "expense": parsedInteger,
+        "mail": "",
+      };
+
+      db.collection("transaction").add(subdata).then((DocumentReference doc) =>
+          print('DocumentSnapshot added with ID: ${doc.id}'));
+    } catch (e) {
+      print("Error");
+    }
+    Navigator.pop(context);
+    Navigator.pop(context);
+    setState(() {});
   }
 }

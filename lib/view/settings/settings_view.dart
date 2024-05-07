@@ -118,8 +118,6 @@ class _SettingsViewState extends State<SettingsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 8),
                     child: Text(
@@ -146,23 +144,19 @@ class _SettingsViewState extends State<SettingsView> {
                           icon: "assets/img/sorting.png",
                           value: "Date",
                         ),
-
                         IconItemRow(
                           title: "Summary",
                           icon: "assets/img/chart.png",
                           value: "Average",
                         ),
-
                         IconItemRow(
                           title: "Default currency",
                           icon: "assets/img/money.png",
                           value: "INR (\₹)",
                         ),
-                        
                       ],
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 8),
                     child: Text(
@@ -199,7 +193,6 @@ class _SettingsViewState extends State<SettingsView> {
                           icon: "assets/img/font.png",
                           value: "Inter",
                         ),
-                        
                       ],
                     ),
                   ),

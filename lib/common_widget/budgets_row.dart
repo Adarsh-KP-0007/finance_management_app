@@ -10,8 +10,8 @@ class BudgetsRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    var proVal = (double.tryParse(bObj["left_amount"]) ?? 0) / (double.tryParse(bObj["total_budget"]) ?? 0);
+    var proVal = (double.tryParse(bObj["spent"]) ?? 0) /
+        (double.tryParse(bObj["totalbudget"]) ?? 0);
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
@@ -19,7 +19,6 @@ class BudgetsRow extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: onPressed,
         child: Container(
-          
           padding: const EdgeInsets.all(10),
           decoration: BoxDecoration(
             border: Border.all(
@@ -35,32 +34,20 @@ class BudgetsRow extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Image.asset(
-                      bObj["icon"],
-                      width: 30,
-                      height: 30,
-                      color: TColor.gray40,
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 8,
-                  ),
                   Expanded(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          bObj["name"],
+                          bObj["type"],
                           style: TextStyle(
                               color: TColor.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "\$${bObj["left_amount"]} left to spend",
+                          "${bObj["unspent"]} left to spend",
                           style: TextStyle(
                               color: TColor.gray30,
                               fontSize: 12,
@@ -77,14 +64,14 @@ class BudgetsRow extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "\$${bObj["spend_amount"]}",
+                          "${bObj["spent"]}",
                           style: TextStyle(
                               color: TColor.white,
                               fontSize: 14,
                               fontWeight: FontWeight.w600),
                         ),
                         Text(
-                          "of \$${bObj["total_budget"]}",
+                          "of ${bObj["budget"]}",
                           style: TextStyle(
                               color: TColor.gray30,
                               fontSize: 12,
@@ -93,13 +80,14 @@ class BudgetsRow extends StatelessWidget {
                       ]),
                 ],
               ),
-
-              const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
               LinearProgressIndicator(
                 backgroundColor: TColor.gray60,
                 valueColor: AlwaysStoppedAnimation(bObj["color"]),
                 minHeight: 3,
-                value: proVal ,
+                value: proVal,
               )
             ],
           ),

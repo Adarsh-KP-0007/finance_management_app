@@ -17,24 +17,31 @@ class SpendingBudgetsView extends StatefulWidget {
 
 List budgetArr = [];
 int transactionsum = 0;
+int totaltransactionsum = 0;
+int totalbudgetsum = 0;
 
 class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
+  var db = FirebaseFirestore.instance;
   fetchData() async {
     budgetArr = [];
+    totalbudgetsum = fetchtotalbudget();
+    totaltransactionsum = 0;
 
-    var db = FirebaseFirestore.instance;
     List<Map<String, dynamic>> tempList1 = [];
     // Create a temporary list
     await db.collection("budget").get().then((event) {
       for (var doc in event.docs) {
-        int spent = fetchspent(doc.data()['type']);
+        int spent = fetchspent(doc.data()['category']);
+        totaltransactionsum += spent;
         int budget = doc.data()['budget'];
         int unspent = budget - spent;
         tempList1.add({
-          "type": doc.data()['type'],
+          "type": doc.data()['category'],
           "spent": spent,
           "unspent": unspent,
-          "total": doc.data()['budget]']
+          "budget": doc.data()['budget'],
+          "totalbudget": totalbudgetsum,
+          "color": TColor.secondaryG
         });
       }
     });
@@ -45,45 +52,34 @@ class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
   }
 
   int fetchspent(String category) {
-    var db;
-    transactionsum = 0;
+    var sum = 0;
     db.collection("transaction").get().then((event) {
       for (var doc in event.docs) {
-        if (doc.data()['type'] == category) {
+        if (doc.data()['category'] == category) {
           int expense = doc.data()['expense'];
-          transactionsum += expense;
+          sum = sum + expense;
         }
       }
     });
-    return transactionsum;
+    return sum;
   }
 
-  List budgetArr = [
-    {
-      "name": "Auto & Transport",
-      "icon": "assets/img/auto_&_transport.png",
-      "spend_amount": "25.99",
-      "total_budget": "400",
-      "left_amount": "250.01",
-      "color": TColor.secondaryG
-    },
-    {
-      "name": "Entertainment",
-      "icon": "assets/img/entertainment.png",
-      "spend_amount": "50.99",
-      "total_budget": "600",
-      "left_amount": "300.01",
-      "color": TColor.secondary50
-    },
-    {
-      "name": "Security",
-      "icon": "assets/img/security.png",
-      "spend_amount": "5.99",
-      "total_budget": "600",
-      "left_amount": "250.01",
-      "color": TColor.primary10
-    },
-  ];
+  int fetchtotalbudget() {
+    var sum = 0;
+    db.collection("budget").get().then((event) {
+      for (var doc in event.docs) {
+        int expense = doc.data()['budget'];
+        sum = sum + expense;
+      }
+    });
+    return sum;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -132,14 +128,14 @@ class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
                 Column(
                   children: [
                     Text(
-                      "\₹82,90",
+                      "\₹$transactionsum",
                       style: TextStyle(
                           color: TColor.white,
                           fontSize: 24,
                           fontWeight: FontWeight.w700),
                     ),
                     Text(
-                      "of \₹2,0000 budget",
+                      "of \₹$totaltransactionsum budget",
                       style: TextStyle(
                           color: TColor.gray30,
                           fontSize: 12,
