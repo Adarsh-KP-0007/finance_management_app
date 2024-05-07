@@ -87,6 +87,7 @@ class _AddExpenseViewState extends State<AddExpenseView> {
         "category": txtCategory.text,
         "expense": parsedInteger,
         "mail": "",
+        "StartDate": DateTime.now()
       };
 
       db.collection("transaction").add(subdata).then((DocumentReference doc) =>

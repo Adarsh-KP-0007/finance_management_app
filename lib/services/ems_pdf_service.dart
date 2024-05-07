@@ -13,7 +13,7 @@ Future<void> generateMonthlyExpenseReport(
   // Fetch expense data for the specified date range from Firestore
   QuerySnapshot<Map<String, dynamic>> snapshot = await FirebaseFirestore
       .instance
-      .collection('New_users')
+      .collection('transaction')
       .where('StartDate',
           isGreaterThanOrEqualTo: startDate, isLessThanOrEqualTo: endDate)
       .get();
@@ -34,9 +34,9 @@ Future<void> generateMonthlyExpenseReport(
 
   // Create a table for expense data
   List<List<String>> tableData = [
-    ['Date', 'Amount'], // Table header
+    ['Date', 'Expense'], // Table header
     for (var doc in snapshot.docs)
-      [doc['StartDate'].toDate().toString(), doc['Amount'].toString()],
+      [doc['StartDate'].toDate().toString(), doc['expense'].toString()],
   ];
 
   // Add the table to the PDF
