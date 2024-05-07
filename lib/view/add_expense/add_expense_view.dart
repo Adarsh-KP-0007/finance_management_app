@@ -47,7 +47,7 @@ class _AddExpenseViewState extends State<AddExpenseView> {
                 style:
                     TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
                 decoration: InputDecoration(
-                  labelText: 'Username',
+                  labelText: 'Category',
                   labelStyle: TextStyle(color: Colors.white),
                 ),
                 /*RoundTextField(
