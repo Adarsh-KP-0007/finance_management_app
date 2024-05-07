@@ -16,62 +16,61 @@ class SpendingBudgetsView extends StatefulWidget {
 }
 
 List budgetArr = [];
+List arc = [];
 int transactionsum = 0;
 int totaltransactionsum = 0;
 int totalbudgetsum = 0;
 
 class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
   var db = FirebaseFirestore.instance;
-  fetchData() async {
-    budgetArr = [];
-    totalbudgetsum = fetchtotalbudget();
-    totaltransactionsum = 0;
-
-    List<Map<String, dynamic>> tempList1 = [];
-    // Create a temporary list
-    await db.collection("budget").get().then((event) {
-      for (var doc in event.docs) {
-        int spent = fetchspent(doc.data()['category']);
-        totaltransactionsum += spent;
-        int budget = doc.data()['budget'];
-        int unspent = budget - spent;
-        tempList1.add({
-          "type": doc.data()['category'],
-          "spent": spent,
-          "unspent": unspent,
-          "budget": doc.data()['budget'],
-          "totalbudget": totalbudgetsum,
-          "color": TColor.secondaryG
-        });
-      }
-    });
+  Future<void> fetchData() async {
+    var tempList1 = [];
+    var tempList2 = [];
+    totalbudgetsum = await fetchTotalBudget(); // Wait for total budget
+    var event = await db.collection("budget").get();
+    for (var doc in event.docs) {
+      var category = doc.data()['category'];
+      var spent = await fetchSpent(category); // Wait for spent amount
+      var budget = doc.data()['budget'];
+      var unspent = budget - spent;
+      var arcvalue = (spent / totalbudgetsum) * 180;
+      tempList2.add(arcvalue);
+      tempList1.add({
+        "type": category,
+        "spent": spent,
+        "unspent": unspent,
+        "budget": budget,
+        "totalbudget": totalbudgetsum,
+        "color": TColor.secondaryG
+      });
+    }
     setState(() {
       budgetArr = tempList1;
+      arc = tempList2;
     });
     print(budgetArr);
   }
 
-  int fetchspent(String category) {
+  Future<int> fetchSpent(String category) async {
     var sum = 0;
-    db.collection("transaction").get().then((event) {
-      for (var doc in event.docs) {
-        if (doc.data()['category'] == category) {
-          int expense = doc.data()['expense'];
-          sum = sum + expense;
-        }
+    var event = await db.collection("transaction").get();
+    for (var doc in event.docs) {
+      if (doc.data()['category'] == category) {
+        int expense = doc.data()['expense'];
+        sum += expense;
+        totaltransactionsum += expense;
       }
-    });
+    }
     return sum;
   }
 
-  int fetchtotalbudget() {
+  Future<int> fetchTotalBudget() async {
     var sum = 0;
-    db.collection("budget").get().then((event) {
-      for (var doc in event.docs) {
-        int expense = doc.data()['budget'];
-        sum = sum + expense;
-      }
-    });
+    var event = await db.collection("budget").get();
+    for (var doc in event.docs) {
+      int expense = doc.data()['budget'];
+      sum += expense;
+    }
     return sum;
   }
 
@@ -115,9 +114,9 @@ class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
                   child: CustomPaint(
                     painter: CustomArc180Painter(
                       drwArcs: [
-                        ArcValueModel(color: TColor.secondaryG, value: 20),
-                        ArcValueModel(color: TColor.secondary, value: 45),
-                        ArcValueModel(color: TColor.primary10, value: 70),
+                        ArcValueModel(color: TColor.secondaryG, value: arc[0]),
+                        ArcValueModel(color: TColor.primary10, value: arc[1]),
+                        ArcValueModel(color: TColor.secondary, value: arc[2])
                       ],
                       end: 50,
                       width: 12,
@@ -128,14 +127,14 @@ class _SpendingBudgetsViewState extends State<SpendingBudgetsView> {
                 Column(
                   children: [
                     Text(
-                      "\₹$transactionsum",
+                      "\₹$totaltransactionsum",
                       style: TextStyle(
                           color: TColor.white,
                           fontSize: 24,
                           fontWeight: FontWeight.w700),
                     ),
                     Text(
-                      "of \₹$totaltransactionsum budget",
+                      "of \₹$totalbudgetsum budget",
                       style: TextStyle(
                           color: TColor.gray30,
                           fontSize: 12,
