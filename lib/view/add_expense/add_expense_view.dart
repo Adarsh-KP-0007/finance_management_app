@@ -42,23 +42,45 @@ class _AddExpenseViewState extends State<AddExpenseView> {
           children: [
             Padding(
                 padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-                child: RoundTextField(
+                
+                child: TextField(
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                decoration: InputDecoration(
+                  labelText: 'Username',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+                /*RoundTextField(
+
                   title: "Category",
-                  titleAlign: TextAlign.center,
+                  titleAlign: TextAlign.center,*/
                   controller: txtCategory,
                 )),
             Padding(
                 padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-                child: RoundTextField(
+                child: TextField(
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                decoration: InputDecoration(
+                  labelText: 'Description',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),
+                /*RoundTextField(
                   title: "Description",
-                  titleAlign: TextAlign.center,
+                  titleAlign: TextAlign.center,*/
                   controller: txtDescription,
                 )),
             Padding(
-                padding: const EdgeInsets.only(top: 30, left: 20, right: 20),
-                child: RoundTextField(
+                padding: const EdgeInsets.only(top: 30, left: 20, right: 20), 
+                child: TextField(
+                style:
+                    TextStyle(color: const Color.fromARGB(255, 255, 255, 255)),
+                decoration: InputDecoration(
+                  labelText: 'Expense',
+                  labelStyle: TextStyle(color: Colors.white),
+                ),/*RoundTextField(
                   title: "Expense",
-                  titleAlign: TextAlign.center,
+                  titleAlign: TextAlign.center,*/
                   controller: txtExpense,
                 )),
             Padding(

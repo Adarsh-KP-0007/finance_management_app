@@ -30,12 +30,12 @@ class _WelcomeViewState extends State<WelcomeView> {
       body: Stack(
         alignment: Alignment.topCenter,
         children: [
-          Image.asset(
+          /*Image.asset(
             "assets/img/welcome_screen.png",
             width: media.width,
             height: media.height,
             fit: BoxFit.cover,
-          ),
+          ),*/
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
