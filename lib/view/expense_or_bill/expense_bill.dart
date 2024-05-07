@@ -43,8 +43,8 @@ class _ExpenseorbillState extends State<Expenseorbill> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 200,
-              height: 20,
+              width: 500,
+              height: 50,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -57,8 +57,8 @@ class _ExpenseorbillState extends State<Expenseorbill> {
             ),
             SizedBox(height: 50),
             SizedBox(
-              width: 200,
-              height: 20,
+              width: 500,
+              height: 50,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
@@ -72,8 +72,8 @@ class _ExpenseorbillState extends State<Expenseorbill> {
             ),
             SizedBox(height: 50),
             SizedBox(
-              width: 200,
-              height: 20,
+              width: 500,
+              height: 50,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
