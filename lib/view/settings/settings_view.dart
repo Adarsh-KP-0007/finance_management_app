@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-
+/*update starts*/
+import 'package:firebase_auth/firebase_auth.dart';
+import 'edit_profile_page.dart';
+/*update ends*/
 import '../../common/color_extension.dart';
 import '../../common_widget/icon_item_row.dart';
 
@@ -11,11 +14,35 @@ class SettingsView extends StatefulWidget {
 }
 
 class _SettingsViewState extends State<SettingsView> {
+/*update starts*/
+  late String userName;
+
+  @override
+  void initState() {
+    super.initState();
+    // Fetch user's information and populate the text controllers
+    fetchUserInfo();
+  }
+
+  void fetchUserInfo() {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      setState(() {
+        userName = user.displayName ?? '';
+      });
+    }
+  }
+  /*update ends*/
+
   bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.sizeOf(context);
+    /*update starts*/
+    User? user = FirebaseAuth.instance.currentUser;
+    String userEmail = user?.email ?? 'No email available';
+    /*update ends*/
     return Scaffold(
       backgroundColor: TColor.gray,
       body: SingleChildScrollView(
@@ -62,18 +89,6 @@ class _SettingsViewState extends State<SettingsView> {
             const SizedBox(
               height: 8,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Adarsh",
-                  style: TextStyle(
-                      color: TColor.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700),
-                )
-              ],
-            ),
             const SizedBox(
               height: 4,
             ),
@@ -81,7 +96,19 @@ class _SettingsViewState extends State<SettingsView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  "adarshnambiar0007@gmail.com",
+                  userName, // Display the user's name
+                  style: TextStyle(
+                      color: TColor.gray30,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500),
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  userEmail,
                   style: TextStyle(
                       color: TColor.gray30,
                       fontSize: 12,
@@ -94,7 +121,20 @@ class _SettingsViewState extends State<SettingsView> {
             ),
             InkWell(
               borderRadius: BorderRadius.circular(15),
-              onTap: () {},
+              onTap: () {
+                // Navigate to the EditProfilePage
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => EditProfilePage(
+                            onNameUpdated: (newName) {
+                              setState(() {
+                                userName = newName;
+                              });
+                            },
+                          )),
+                );
+              },
               child: Container(
                 padding: const EdgeInsets.all(6),
                 decoration: BoxDecoration(
@@ -118,8 +158,6 @@ class _SettingsViewState extends State<SettingsView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 8),
                     child: Text(
@@ -146,23 +184,19 @@ class _SettingsViewState extends State<SettingsView> {
                           icon: "assets/img/sorting.png",
                           value: "Date",
                         ),
-
                         IconItemRow(
                           title: "Summary",
                           icon: "assets/img/chart.png",
                           value: "Average",
                         ),
-
                         IconItemRow(
                           title: "Default currency",
                           icon: "assets/img/money.png",
                           value: "INR (\₹)",
                         ),
-                        
                       ],
                     ),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.only(top: 20, bottom: 8),
                     child: Text(
@@ -199,7 +233,6 @@ class _SettingsViewState extends State<SettingsView> {
                           icon: "assets/img/font.png",
                           value: "Inter",
                         ),
-                        
                       ],
                     ),
                   ),
